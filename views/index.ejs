@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Password Vault</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-[#0a0a0a] to-[#111] text-white font-sans">
+
+  <div class="absolute top-0 left-0 w-full flex justify-between items-center p-4">
+    <div class="text-xl font-bold tracking-tight">▲ Vault</div>
+    <div class="space-x-3">
+      <form action="/logout" method="POST" style="display: inline;">
+        <button type="submit" class="border border-white/20 px-4 py-1 rounded text-sm hover:bg-white/10">Log
+          out</button>
+      </form>
+      <button class="bg-white text-black px-4 py-1 rounded text-sm hover:bg-gray-200">meow</button>
+    </div>
+  </div>
+
+  <div class="flex pt-16 min-h-screen">
+
+    <!-- Sidebar on the left -->
+    <aside class="w-72 bg-zinc-1000 p-6 border-r border-zinc-800 flex flex-col gap-6 h-screen overflow-y-auto text-black">
+
+      <form id="addForm" method="POST" action="/create" class="space-y-5">
+        <input name="site" type="text" placeholder="Site Name (e.g., Gmail)" class="input-field rounded" required />
+        <input name="siteUsername" type="text" placeholder="Username/Email" class="input-field rounded" required />
+        <input name="sitePassword" type="password" placeholder="Password" class="input-field rounded" required />
+        <input type="submit" value="➕ Add Password"
+          class="w-full py-2 px-4 rounded-xl bg-white text-black font-medium hover:bg-gray-200 transition">
+      </form>
+
+    </aside>
+
+    <!-- Main content on the right -->
+    <main class="flex-1 p-8 overflow-y-auto min-h-screen">
+      <h2 class="text-3xl font-semibold mb-6">🗂 Your Vault</h2>
+      <div id="vaultList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <% if (vaultItems.length===0) { %>
+          <p class="text-zinc-400 col-span-full text-center">No saved passwords yet.</p>
+        <% } else { %>
+          <% vaultItems.forEach(item => { %>
+            <div class="bg-black rounded-xl p-6 shadow hover:shadow-lg transition border border-zinc-600">
+              <div class="text-lg font-semibold mb-1">
+                <%= item.site %>
+              </div>
+              <div class="text-sm text-zinc-400">👤 <%= item.siteUsername %></div>
+              <div class="text-sm text-zinc-200 mt-2">
+                PASSWORD: <span class="blur-sm hover:blur-none transition"><%= item.sitePassword %></span>
+              </div>
+            </div>
+          <% }) %>
+        <% } %>
+      </div>
+    </main>
+
+  </div>
+
+  <style>
+    .input-field {
+      @apply w-full p-3 bg-neutral-800 text-white border border-neutral-700 rounded-xl placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-white;
+    }
+  </style>
+
+</body>
+
+</html>
